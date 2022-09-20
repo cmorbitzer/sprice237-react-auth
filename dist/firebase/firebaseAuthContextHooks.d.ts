@@ -1,0 +1,16 @@
+import { User, applyActionCode, confirmPasswordReset, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, verifyPasswordResetCode, AuthCredential, UserCredential } from 'firebase/auth';
+declare type OmitFirstArg<F> = F extends (x: never, ...args: infer P) => infer R ? (...args: P) => R : never;
+export declare const useApplyActionCode: () => OmitFirstArg<typeof applyActionCode>;
+export declare const useConfirmPasswordReset: () => OmitFirstArg<typeof confirmPasswordReset>;
+export declare const useCreateUserWithEmailAndPassword: () => OmitFirstArg<typeof createUserWithEmailAndPassword>;
+export declare const useLinkWithCredential: () => (credential: AuthCredential) => Promise<UserCredential>;
+export declare const useSendEmailVerification: () => (() => Promise<void>);
+export declare const useSendPasswordResetEmail: () => OmitFirstArg<typeof sendPasswordResetEmail>;
+export declare const useSignInWithEmailAndPassword: () => OmitFirstArg<typeof signInWithEmailAndPassword>;
+export declare const useSignInWithPopup: () => OmitFirstArg<typeof signInWithPopup>;
+export declare const useSignInWithRedirect: () => OmitFirstArg<typeof signInWithRedirect>;
+export declare const useSignOut: () => OmitFirstArg<typeof signOut>;
+export declare const useUpdateEmail: () => (currentEmail: string, newEmail: string) => Promise<void>;
+export declare const useUnlink: () => (providerId: string) => Promise<User>;
+export declare const useVerifyPasswordResetCode: () => OmitFirstArg<typeof verifyPasswordResetCode>;
+export {};
