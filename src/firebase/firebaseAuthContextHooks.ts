@@ -13,6 +13,7 @@ import {
   signInWithRedirect,
   signOut,
   unlink,
+  updateEmail,
   updatePassword,
   verifyPasswordResetCode,
   AuthCredential,
@@ -100,6 +101,27 @@ export const useSignInWithRedirect = (): OmitFirstArg<typeof signInWithRedirect>
 
 export const useSignOut = (): OmitFirstArg<typeof signOut> =>
   useWrappedFirebaseAuthFunction(signOut);
+
+export const useUpdateEmail = (): ((currentEmail: string, newEmail: string) => Promise<void>) => {
+  const { rawUser } = useFirebaseAuthContext();
+
+  return useCallback(
+    async (currentEmail: string, newEmail: string) => {
+      if (!rawUser) {
+        throw new Error('User is not valid');
+      }
+
+      if (!rawUser.email) {
+        throw new Error('User does not have an email address');
+      }
+
+      const credential = EmailAuthProvider.credential(rawUser.email, currentEmail);
+      await reauthenticateWithCredential(rawUser, credential);
+      return updateEmail(rawUser, newEmail);
+    },
+    [rawUser]
+  );
+};
 
 export const useUpdatePassword = (): ((
   currentPassword: string,
