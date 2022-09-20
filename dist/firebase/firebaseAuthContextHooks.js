@@ -46,14 +46,14 @@ export const useSignInWithRedirect = () => useWrappedFirebaseAuthFunction(signIn
 export const useSignOut = () => useWrappedFirebaseAuthFunction(signOut);
 export const useUpdateEmail = () => {
     const { rawUser } = useFirebaseAuthContext();
-    return useCallback((currentEmail, newEmail) => __awaiter(void 0, void 0, void 0, function* () {
+    return useCallback((currentPassword, newEmail) => __awaiter(void 0, void 0, void 0, function* () {
         if (!rawUser) {
             throw new Error('User is not valid');
         }
         if (!rawUser.email) {
             throw new Error('User does not have an email address');
         }
-        const credential = EmailAuthProvider.credential(rawUser.email, currentEmail);
+        const credential = EmailAuthProvider.credential(rawUser.email, currentPassword);
         yield reauthenticateWithCredential(rawUser, credential);
         return updateEmail(rawUser, newEmail);
     }), [rawUser]);
