@@ -108,7 +108,7 @@ export const useUpdateEmail = (): ((
   const { user } = useFirebaseAuthContext();
 
   return useCallback(
-    async (currentEmail: string, newEmail: string) => {
+    async (currentPassword: string, newEmail: string) => {
       if (!user) {
         throw new Error("User is not valid");
       }
@@ -117,7 +117,10 @@ export const useUpdateEmail = (): ((
         throw new Error("User does not have an email address");
       }
 
-      const credential = EmailAuthProvider.credential(user.email, currentEmail);
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        currentPassword
+      );
       await reauthenticateWithCredential(user, credential);
       return updateEmail(user, newEmail);
     },
