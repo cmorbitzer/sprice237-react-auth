@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { useState } from 'react';
 import { getFirebaseErrorMessage } from "./firebase/errors";
-import { useConfirmPasswordReset, useCreateUserWithEmailAndPassword, useSendEmailVerification, useSendPasswordResetEmail, useSignInWithEmailAndPassword, useVerifyPasswordResetCode, } from "./firebase/firebaseAuthContextHooks";
+import { useConfirmPasswordReset, useCreateUserWithEmailAndPassword, useSendEmailVerification, useSendPasswordResetEmail, useSetPersistence, useSignInWithEmailAndPassword, useVerifyPasswordResetCode, } from "./firebase/firebaseAuthContextHooks";
 export const useEmailVerificationForm = () => {
     const sendEmailVerification = useSendEmailVerification();
     const [inProgress, setInProgress] = useState(false);
@@ -55,13 +55,15 @@ export const useForgotPasswordForm = () => {
     return { error, inProgress, isComplete, submit };
 };
 export const usePasswordLoginForm = () => {
+    const setPersistence = useSetPersistence();
     const signInWithEmailAndPassword = useSignInWithEmailAndPassword();
     const [inProgress, setInProgress] = useState(false);
     const [error, setError] = useState();
-    const submit = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
+    const submit = ({ email, password, remember = false }) => __awaiter(void 0, void 0, void 0, function* () {
         setInProgress(true);
         setError(undefined);
         try {
+            yield setPersistence(remember ? 'local' : 'session');
             yield signInWithEmailAndPassword(email, password);
         }
         catch (e) {

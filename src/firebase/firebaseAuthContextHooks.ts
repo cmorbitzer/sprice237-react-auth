@@ -2,12 +2,15 @@ import {
   Auth,
   User,
   applyActionCode,
+  browserLocalPersistence,
+  browserSessionPersistence,
   confirmPasswordReset,
   createUserWithEmailAndPassword,
   linkWithCredential,
   reauthenticateWithCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
@@ -82,6 +85,18 @@ export const useSendEmailVerification = (): (() => Promise<void>) => {
 
 export const useSendPasswordResetEmail = (): OmitFirstArg<typeof sendPasswordResetEmail> =>
   useWrappedFirebaseAuthFunction(sendPasswordResetEmail);
+
+export const useSetPersistence = (): ((persistence: 'local' | 'session') => Promise<void>) => {
+  const wrappedSetPersistence = useWrappedFirebaseAuthFunction(setPersistence);
+
+  return useCallback(
+    (persistence) =>
+      wrappedSetPersistence(
+        persistence === 'session' ? browserSessionPersistence : browserLocalPersistence
+      ),
+    [wrappedSetPersistence]
+  );
+};
 
 export const useSignInWithEmailAndPassword = (): OmitFirstArg<typeof signInWithEmailAndPassword> =>
   useWrappedFirebaseAuthFunction(signInWithEmailAndPassword);

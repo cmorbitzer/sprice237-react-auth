@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { applyActionCode, confirmPasswordReset, createUserWithEmailAndPassword, linkWithCredential, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, unlink, updateEmail, verifyPasswordResetCode, EmailAuthProvider, } from 'firebase/auth';
+import { applyActionCode, browserLocalPersistence, browserSessionPersistence, confirmPasswordReset, createUserWithEmailAndPassword, linkWithCredential, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, unlink, updateEmail, verifyPasswordResetCode, EmailAuthProvider, } from 'firebase/auth';
 import { useCallback } from 'react';
 import { useFirebaseAuthContext } from './firebaseAuthContext';
 const wrapFirebaseAuthFunction = (firebaseAuth, func) => {
@@ -40,6 +40,10 @@ export const useSendEmailVerification = () => {
     }, [user]);
 };
 export const useSendPasswordResetEmail = () => useWrappedFirebaseAuthFunction(sendPasswordResetEmail);
+export const useSetPersistence = () => {
+    const wrappedSetPersistence = useWrappedFirebaseAuthFunction(setPersistence);
+    return useCallback((persistence) => wrappedSetPersistence(persistence === 'session' ? browserSessionPersistence : browserLocalPersistence), [wrappedSetPersistence]);
+};
 export const useSignInWithEmailAndPassword = () => useWrappedFirebaseAuthFunction(signInWithEmailAndPassword);
 export const useSignInWithPopup = () => useWrappedFirebaseAuthFunction(signInWithPopup);
 export const useSignInWithRedirect = () => useWrappedFirebaseAuthFunction(signInWithRedirect);

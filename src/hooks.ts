@@ -5,6 +5,7 @@ import {
   useCreateUserWithEmailAndPassword,
   useSendEmailVerification,
   useSendPasswordResetEmail,
+  useSetPersistence,
   useSignInWithEmailAndPassword,
   useVerifyPasswordResetCode,
 } from '$/firebase/firebaseAuthContextHooks';
@@ -78,6 +79,7 @@ export const useForgotPasswordForm = (): ForgotPasswordFormState => {
 export interface PasswordLoginFormData {
   email: string;
   password: string;
+  remember?: boolean;
 }
 
 export type PasswordLoginFormState = {
@@ -87,15 +89,17 @@ export type PasswordLoginFormState = {
 };
 
 export const usePasswordLoginForm = (): PasswordLoginFormState => {
+  const setPersistence = useSetPersistence();
   const signInWithEmailAndPassword = useSignInWithEmailAndPassword();
   const [inProgress, setInProgress] = useState(false);
 
   const [error, setError] = useState<string | undefined>();
 
-  const submit = async ({ email, password }: PasswordLoginFormData) => {
+  const submit = async ({ email, password, remember = false }: PasswordLoginFormData) => {
     setInProgress(true);
     setError(undefined);
     try {
+      await setPersistence(remember ? 'local' : 'session');
       await signInWithEmailAndPassword(email, password);
     } catch (e) {
       setError(getFirebaseErrorMessage(e));

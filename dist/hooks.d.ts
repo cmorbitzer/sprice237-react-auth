@@ -18,6 +18,7 @@ export declare const useForgotPasswordForm: () => ForgotPasswordFormState;
 export interface PasswordLoginFormData {
     email: string;
     password: string;
+    remember?: boolean;
 }
 export declare type PasswordLoginFormState = {
     error: string | undefined;

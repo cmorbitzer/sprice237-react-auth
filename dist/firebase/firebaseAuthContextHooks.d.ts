@@ -6,6 +6,7 @@ export declare const useCreateUserWithEmailAndPassword: () => OmitFirstArg<typeo
 export declare const useLinkWithCredential: () => (credential: AuthCredential) => Promise<UserCredential>;
 export declare const useSendEmailVerification: () => (() => Promise<void>);
 export declare const useSendPasswordResetEmail: () => OmitFirstArg<typeof sendPasswordResetEmail>;
+export declare const useSetPersistence: () => (persistence: 'local' | 'session') => Promise<void>;
 export declare const useSignInWithEmailAndPassword: () => OmitFirstArg<typeof signInWithEmailAndPassword>;
 export declare const useSignInWithPopup: () => OmitFirstArg<typeof signInWithPopup>;
 export declare const useSignInWithRedirect: () => OmitFirstArg<typeof signInWithRedirect>;
